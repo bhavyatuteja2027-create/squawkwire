@@ -24,10 +24,31 @@ function chime() {
   } catch (e) { /* ignore */ }
 }
 
+// Browsers lock speechSynthesis until it is first spoken from inside a user gesture.
+// Call this from the Squawk toggle's click handler so later programmatic speak() calls
+// (from polling / realtime) are allowed to produce sound.
+function unlockSpeech() {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return;
+  try {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance('Squawk on');
+    window.speechSynthesis.speak(u);
+    window.speechSynthesis.getVoices(); // some browsers populate voices async
+  } catch (e) { /* ignore */ }
+}
+
+// Human label for an entitlement delay in seconds (0 = live, 300 = "5 min", 86400 = "24h").
+function delayLabel(sec) {
+  const s = Number(sec) || 0;
+  if (s <= 0) return 'live';
+  if (s < 3600) return `${Math.round(s / 60)} min`;
+  return `${Math.round(s / 3600)}h`;
+}
+
 export default function Terminal() {
   const sb = useMemo(() => supabaseBrowser(), []);
   const [session, setSession] = useState(undefined); // undefined = loading
-  const [ent, setEnt] = useState({ delay_seconds: 86400, channels: ['in_app'], max_widgets: 3, max_keywords: 3, max_tabs: 1 });
+  const [ent, setEnt] = useState({ delay_seconds: 300, channels: ['in_app'], max_widgets: 3, max_keywords: 3, max_tabs: 1 });
   const [items, setItems] = useState([]);
   const [entByItem, setEntByItem] = useState({});
   const [freshIds, setFreshIds] = useState(new Set());
@@ -81,7 +102,7 @@ export default function Terminal() {
     } catch (e) { setEntByItem({}); }
     const latest = incoming[0] ? tsOf(incoming[0]) : Date.now() / 1000;
     const paid = Number(entRef.current.delay_seconds) === 0;
-    setStat(`${incoming.length} headlines${incoming.length ? ` · newest ${ago(latest)} ago` : ''}${paid ? '' : ' · 24h delayed (Free)'}`);
+    setStat(`${incoming.length} headlines${incoming.length ? ` · newest ${ago(latest)} ago` : ''}${paid ? '' : ` · ${delayLabel(entRef.current.delay_seconds)} delayed (Free)`}`);
   }, [sb, speak]);
 
   const loadWorkspace = useCallback(async () => {
@@ -229,7 +250,7 @@ export default function Terminal() {
   }, [sb]);
   useEffect(() => { if (view === 'admin' && session) loadAdmin(); }, [view, session, loadAdmin]);
 
-  const toggleSquawk = () => { setSq((s) => { const n = !s; if (n) chime(); return n; }); };
+  const toggleSquawk = () => { setSq((s) => { const n = !s; if (n) { chime(); unlockSpeech(); } return n; }); };
 
   if (session === undefined) return <div className="gate"><div className="card">Loading…</div></div>;
   if (!session) return <Gate sb={sb} />;
@@ -258,7 +279,7 @@ export default function Terminal() {
           <input type="search" placeholder="Search all widgets" aria-label="Search headlines" value={query} onChange={(e) => setQuery(e.target.value)} />
           <button className="btn g" style={{ padding: '6px 10px' }} onClick={() => sb.auth.signOut()}>Log out</button>
         </div>
-        {!isPaid && <div className="upsell"><b>Free plan:</b> headlines are delayed 24 hours. Upgrade for live data, alerts and more widgets.</div>}
+        {!isPaid && <div className="upsell"><b>Free plan:</b> headlines are delayed {delayLabel(ent.delay_seconds)}. Upgrade for live data, alerts and more widgets.</div>}
 
         {view === 'dash' && (
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
@@ -279,7 +300,7 @@ export default function Terminal() {
                 return (
                   <section className="w" key={w.id}>
                     <div className="wh">
-                      <span>{w.title}</span><span className="bd">{isPaid ? 'live' : '24h delay'}</span>
+                      <span>{w.title}</span><span className="bd">{isPaid ? 'live' : `${delayLabel(ent.delay_seconds)} delay`}</span>
                       <div className="ic">
                         <button title="Edit" aria-label={`Edit ${w.title}`} onClick={() => setDlg({ editingId: w.id, title: w.title, cat: w.cat, src: w.src, kw: w.kw })}>⚙</button>
                         <button title="Remove" aria-label={`Remove ${w.title}`} onClick={() => removeWidget(w)}>×</button>
