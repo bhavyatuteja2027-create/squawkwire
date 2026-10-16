@@ -50,5 +50,3 @@ vercel.json            Vercel static-hosting config for web/
 - Frontend reads items from Supabase (auth-gated) with realtime for paid users;
   dashboards/tabs/widgets and keywords move from localStorage to the database.
 - `fetch_news.py` writes headlines into Postgres (keyword scoring; FinBERT is Phase 2b).
-
-See `SETUP.md` for setup steps, env vars, and the Phase 1 test checklist.
