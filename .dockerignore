@@ -1,0 +1,11 @@
+# Root build context only needs worker/. Exclude everything else to keep the image build fast.
+frontend/
+web/
+api/
+supabase/
+node_modules/
+**/node_modules/
+.next/
+.git/
+*.md
+.env*
