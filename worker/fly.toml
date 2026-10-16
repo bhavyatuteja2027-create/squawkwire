@@ -1,0 +1,16 @@
+# Fly.io config for the Easy Squawk ingestion worker (always-on, no inbound HTTP).
+# Set secrets with: fly secrets set SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... \
+#   SOURCE_USER_AGENT="EasySquawk/0.2 (contact: you@example.com)" SENTIMENT_BACKEND=finbert
+app = "easy-squawk-worker"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[processes]
+  worker = "python -m easysquawk.worker"
+
+# No [[services]] block: this is a background worker, not a web service.
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1gb"   # FinBERT needs ~1GB; drop to 256mb for keyword-only.

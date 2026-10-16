@@ -1,0 +1,9 @@
+# Easy Squawk ingestion worker.
+#
+# Core ingestion uses ONLY the Python standard library (urllib, xml) — no deps required
+# for SENTIMENT_BACKEND=keyword.
+#
+# For SENTIMENT_BACKEND=finbert, install the ML stack below. CPU inference on short
+# headlines is fine; a small instance works. Versions pinned for reproducible builds.
+transformers==4.44.2
+torch==2.4.1

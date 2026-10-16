@@ -1,0 +1,16 @@
+{
+  "name": "easy-squawk-api",
+  "version": "0.4.0",
+  "private": true,
+  "description": "Vercel serverless functions for Easy Squawk billing (Stripe).",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test api/tests/billing.test.js",
+    "test:py": "cd worker && python3 -m unittest discover -s tests"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.45.4",
+    "stripe": "16.12.0"
+  }
+}

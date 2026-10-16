@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.hf/
+fetch_news.py
+requirements.txt.lock
