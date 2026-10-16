@@ -13,9 +13,52 @@ def _rpc(fn, payload):
         "Authorization": f"Bearer {config.SERVICE_KEY}",
         "Content-Type": "application/json",
     })
-    with urllib.request.urlopen(req, timeout=30) as r:
-        raw = r.read()
-    return json.loads(raw) if raw else None
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            raw = r.read()
+        return json.loads(raw) if raw else None
+    except urllib.error.HTTPError as e:
+        # Surface the real status + body so failures are actionable (404 = RPC missing,
+        # 401 = bad key, 400 = arg mismatch) instead of an opaque "HTTPError".
+        detail = ""
+        try:
+            detail = e.read().decode("utf-8", "replace")[:300]
+        except Exception:
+            pass
+        raise RuntimeError(f"HTTP {e.code} on rpc/{fn}: {detail}") from None
+
+
+def preflight():
+    """Fail fast with a clear diagnosis before ingesting. Checks URL/key/schema.
+    Raises SystemExit with a human message on any misconfiguration."""
+    url = f"{config.SUPABASE_URL}/rest/v1/sources?select=name&limit=1"
+    req = urllib.request.Request(url, headers={
+        "apikey": config.SERVICE_KEY,
+        "Authorization": f"Bearer {config.SERVICE_KEY}",
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=15) as r:
+            r.read()
+    except urllib.error.HTTPError as e:
+        if e.code == 401:
+            raise SystemExit("Preflight 401: SUPABASE_SERVICE_ROLE_KEY is wrong or not the service_role key.")
+        if e.code == 404:
+            raise SystemExit("Preflight 404: the 'sources' table is missing — run the migrations (0001–0008) first.")
+        raise SystemExit(f"Preflight HTTP {e.code}: {e.read().decode('utf-8','replace')[:300]}")
+    except urllib.error.URLError as e:
+        raise SystemExit(f"Preflight failed to reach {config.SUPABASE_URL}: {e.reason} (check SUPABASE_URL).")
+    # Check the RPC the worker depends on actually exists (read-only: PostgREST OpenAPI root
+    # lists available /rpc/ functions). Avoids inserting a probe row.
+    root = urllib.request.Request(f"{config.SUPABASE_URL}/rest/v1/", headers={
+        "apikey": config.SERVICE_KEY, "Authorization": f"Bearer {config.SERVICE_KEY}",
+    })
+    try:
+        with urllib.request.urlopen(root, timeout=15) as r:
+            spec = r.read().decode("utf-8", "replace")
+        if "/rpc/ingest_item" not in spec:
+            raise SystemExit("Preflight: ingest_item() RPC missing — run migration 0004 (and all 0001–0008).")
+    except urllib.error.HTTPError:
+        pass  # some projects restrict the root; the sources check above already validated access
 
 
 def ingest_item(row):

@@ -1,9 +1,15 @@
 /** @type {import('next').NextConfig} */
-// Security headers incl. CSP. Next bundles app JS, so script-src stays tight (no inline app
-// script). 'unsafe-inline' remains only for styles (global stylesheet + a few inline styles).
+// Security headers incl. CSP. Next bundles app JS, so in PRODUCTION script-src stays tight
+// (no inline, no eval). In DEVELOPMENT, Next's React Fast Refresh / webpack HMR require
+// 'unsafe-eval' and inline scripts, so we relax script-src only when not in production.
+const isDev = process.env.NODE_ENV !== 'production';
+const scriptSrc = isDev
+  ? "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://challenges.cloudflare.com"
+  : "script-src 'self' https://challenges.cloudflare.com";
+
 const csp = [
   "default-src 'self'",
-  "script-src 'self' https://challenges.cloudflare.com",
+  scriptSrc,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self' data:",

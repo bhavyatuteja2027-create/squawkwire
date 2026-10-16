@@ -1,7 +1,17 @@
 """Worker configuration: env vars, source list, polling intervals, tuning knobs."""
 import os
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "").rstrip("/")
+def _base_url(raw):
+    """Normalize SUPABASE_URL to the project origin. Tolerates a pasted REST URL
+    (…supabase.co/rest/v1/) or trailing slashes so we never double the /rest/v1 path."""
+    u = (raw or "").strip().rstrip("/")
+    for suffix in ("/rest/v1", "/rest"):
+        if u.endswith(suffix):
+            u = u[: -len(suffix)]
+    return u.rstrip("/")
+
+
+SUPABASE_URL = _base_url(os.environ.get("SUPABASE_URL", ""))
 SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
 USER_AGENT = os.environ.get("SOURCE_USER_AGENT", "Squawkwire/0.2 (contact: you@example.com)")
 

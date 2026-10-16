@@ -42,7 +42,7 @@ def _ingest_batch(raw_items, source_name):
         try:
             item_id = db.ingest_item(row)
         except Exception as e:
-            print(f"[ingest] {source_name}: {type(e).__name__}")
+            print(f"[ingest] {source_name}: {e}")
             continue
         if item_id:
             for ent in entities.extract(title):
@@ -88,6 +88,7 @@ def poll_source(name, url, is_gdelt=False):
 
 def run_once():
     """Single pass over every source (cron / GitHub Actions path)."""
+    db.preflight()  # fail fast with a clear message if URL/key/migrations are wrong
     total, errors = 0, 0
     for name, url, _cat, _poll in config.FEEDS:
         n, ok = poll_source(name, url)
@@ -105,6 +106,7 @@ def run_once():
 
 def run_forever():
     """Continuous loop with per-source intervals and exponential backoff on failure."""
+    db.preflight()  # fail fast on misconfig before the loop
     # schedule: name -> {url, interval, next_due, is_gdelt, fails}
     sched = {}
     for name, url, _cat, poll in config.FEEDS:
