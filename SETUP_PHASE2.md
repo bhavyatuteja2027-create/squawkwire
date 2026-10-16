@@ -1,4 +1,4 @@
-# Easy Squawk — Phase 2: always-on worker + FinBERT + clustering + entities
+# Squawkwire — Phase 2: always-on worker + FinBERT + clustering + entities
 
 Phase 2 moves ingestion off the 10-minute GitHub Actions cron onto an **always-on worker**,
 adds **FinBERT** sentiment, **pg_trgm fuzzy clustering**, and **SEC ticker entity extraction**.
@@ -27,7 +27,7 @@ user-facing `feed_entities(item_ids[])` RPC (returns tickers for items past the 
 
 ```
 worker/
-  easysquawk/
+  squawkwire/
     config.py     env, source list + per-source poll intervals, tuning knobs
     parse.py      fetch, RSS/Atom + GDELT parsing, canonical URL, categorize
     score.py      keyword scorer + FinBERT (batched), unified score_batch()
@@ -40,8 +40,8 @@ worker/
 
 **Run modes:**
 ```bash
-python -m easysquawk.worker          # continuous, per-source intervals (always-on host)
-python -m easysquawk.worker --once   # single pass (cron / GitHub Actions)
+python -m squawkwire.worker          # continuous, per-source intervals (always-on host)
+python -m squawkwire.worker --once   # single pass (cron / GitHub Actions)
 ```
 
 **Sentiment backend** via `SENTIMENT_BACKEND`:
@@ -64,7 +64,7 @@ python -m easysquawk.worker --once   # single pass (cron / GitHub Actions)
 cd worker
 fly launch --no-deploy            # uses fly.toml (worker process, no public service)
 fly secrets set SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... \
-  SOURCE_USER_AGENT="EasySquawk/0.2 (contact: you@example.com)" SENTIMENT_BACKEND=finbert
+  SOURCE_USER_AGENT="Squawkwire/0.2 (contact: you@example.com)" SENTIMENT_BACKEND=finbert
 fly deploy
 ```
 
@@ -79,7 +79,7 @@ fly deploy
 ## 4. Phase 2 test checklist
 
 **Worker**
-- [ ] `SENTIMENT_BACKEND=keyword python -m easysquawk.worker --once` ingests with no ML deps.
+- [ ] `SENTIMENT_BACKEND=keyword python -m squawkwire.worker --once` ingests with no ML deps.
 - [ ] With `requirements.txt` installed, `SENTIMENT_BACKEND=finbert ... --once` loads the model
       and `items.sentiment_probs` is populated (`{pos,neg,neu}`) for new rows.
 - [ ] Killing network to one source: that source backs off, others keep ingesting; the job

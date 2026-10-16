@@ -1,4 +1,4 @@
-# Easy Squawk — Phase 3: alert rules, matcher, in-app + email alerts
+# Squawkwire — Phase 3: alert rules, matcher, in-app + email alerts
 
 Adds keyword/ticker **alert rules**, a server-side **matcher** that runs in the worker right
 after each item is ingested, **in-app** delivery (realtime toast + chime + squawk) and **email**
@@ -35,7 +35,7 @@ the in-app toast stream is scoped per user.
 
 - The matcher is called automatically: `worker.py::_ingest_batch` runs `db.match_alerts(item_id)`
   after each item + its entities are stored. No separate process.
-- **Email sender** (`easysquawk/email_sender.py`, Resend): `run_once` flushes once at the end of a
+- **Email sender** (`squawkwire/email_sender.py`, Resend): `run_once` flushes once at the end of a
   pass; `run_forever` flushes every ~20s. If `EMAIL_API_KEY` is unset, email is a no-op and
   deliveries stay `pending` (safe — turn it on later).
 
@@ -44,7 +44,7 @@ New worker env (add to Railway/Fly secrets):
 | Var | Purpose |
 |---|---|
 | `EMAIL_API_KEY` | Resend API key (`re_...`) |
-| `EMAIL_FROM` | Verified sender, e.g. `Easy Squawk <alerts@yourdomain.com>` |
+| `EMAIL_FROM` | Verified sender, e.g. `Squawkwire <alerts@yourdomain.com>` |
 | `APP_BASE_URL` | Optional link back to the terminal in the email |
 
 ---

@@ -1,4 +1,4 @@
--- Easy Squawk — Phase 1 seed data (brief section 9 plans, section 5 sources)
+-- Squawkwire — Phase 1 seed data (brief section 9 plans, section 5 sources)
 -- Prices/limits are placeholders from the brief — change freely.
 -- Run after 0001/0002. Idempotent (on conflict do nothing / update).
 

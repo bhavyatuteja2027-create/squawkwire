@@ -1,15 +1,15 @@
-export const metadata = { title: 'Terms of Service — Easy Squawk' };
+export const metadata = { title: 'Terms of Service — Squawkwire' };
 
 export default function Terms() {
   return (
     <>
       <h1>Terms of Service</h1>
       <h2>1. Acceptance</h2>
-      <p>By creating an account or using Easy Squawk (the &quot;Service&quot;), operated by
+      <p>By creating an account or using Squawkwire (the &quot;Service&quot;), operated by
       [COMPANY LEGAL NAME], [JURISDICTION], you agree to these Terms, the Privacy Policy and the
       Disclaimer.</p>
       <h2>2. The Service</h2>
-      <p>Easy Squawk provides aggregated financial news headlines with automated analysis and
+      <p>Squawkwire provides aggregated financial news headlines with automated analysis and
       alerts. It is an information tool, not investment advice. We may change or discontinue
       features at any time.</p>
       <h2>3. Accounts</h2>

@@ -1,4 +1,4 @@
--- Easy Squawk — Phase 4: Stripe billing (brief section 9).
+-- Squawkwire — Phase 4: Stripe billing (brief section 9).
 -- Webhooks drive entitlements. Access changes ONLY when a verified webhook arrives
 -- (never on the redirect). All RPCs here are service-role (called by the Vercel webhook
 -- function with the service key); none are granted to anon/authenticated.

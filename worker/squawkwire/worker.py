@@ -1,4 +1,4 @@
-"""Easy Squawk always-on ingestion worker (Phase 2).
+"""Squawkwire always-on ingestion worker (Phase 2).
 
 Continuous loop: each source has its own poll interval. On each tick, sources that are "due"
 are fetched, parsed, scored in a batch, and ingested via the server-side ingest_item RPC
@@ -6,8 +6,8 @@ are fetched, parsed, scored in a batch, and ingested via the server-side ingest_
 One failing source never stops the others; failures back off and are reported to source health.
 
 Modes:
-  python -m easysquawk.worker            # continuous (Railway/Fly always-on)
-  python -m easysquawk.worker --once     # single pass of every source (GitHub Actions / cron)
+  python -m squawkwire.worker            # continuous (Railway/Fly always-on)
+  python -m squawkwire.worker --once     # single pass of every source (GitHub Actions / cron)
 """
 import sys, time, traceback
 

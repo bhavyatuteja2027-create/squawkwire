@@ -1,4 +1,4 @@
-// Easy Squawk web app — public runtime config.
+// Squawkwire web app — public runtime config.
 // These values are CLIENT-SAFE: the anon key only grants access allowed by Row Level
 // Security, and the Turnstile SITE key is meant to be public. The service-role key and the
 // Stripe secret key must NEVER appear here (worker/server only).

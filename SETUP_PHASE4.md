@@ -1,4 +1,4 @@
-# Easy Squawk — Phase 4: Stripe billing (checkout + webhooks + entitlements go live)
+# Squawkwire — Phase 4: Stripe billing (checkout + webhooks + entitlements go live)
 
 Hosted Stripe Checkout + billing portal + signature-verified webhooks on Vercel serverless
 functions. Access changes **only** when a verified webhook arrives (never on the redirect).

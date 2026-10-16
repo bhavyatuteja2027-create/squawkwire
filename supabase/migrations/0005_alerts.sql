@@ -1,4 +1,4 @@
--- Easy Squawk — Phase 3: alert matcher, delivery dedupe, rate limits, quiet hours
+-- Squawkwire — Phase 3: alert matcher, delivery dedupe, rate limits, quiet hours
 -- (brief section 10). The matcher runs server-side so matching logic lives in ONE place;
 -- the worker calls match_alerts(item_id) right after ingest.
 

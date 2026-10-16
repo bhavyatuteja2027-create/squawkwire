@@ -1,4 +1,4 @@
--- Easy Squawk — SQL verification checks (Phase 5 test suite, DB side).
+-- Squawkwire — SQL verification checks (Phase 5 test suite, DB side).
 -- These are manual assertions to run in the Supabase SQL editor against a seeded project.
 -- They verify the money-path + security invariants that unit tests can't (they need the DB).
 -- Each block prints PASS/FAIL. Run as the service role (SQL editor runs with elevated rights).

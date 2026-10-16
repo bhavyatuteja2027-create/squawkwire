@@ -1,4 +1,4 @@
-# Easy Squawk ingestion worker.
+# Squawkwire ingestion worker.
 #
 # Core ingestion uses ONLY the Python standard library (urllib, xml) — no deps required
 # for SENTIMENT_BACKEND=keyword.

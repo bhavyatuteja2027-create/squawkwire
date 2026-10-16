@@ -1,8 +1,8 @@
 {
-  "name": "easy-squawk-api",
+  "name": "squawkwire-api",
   "version": "0.4.0",
   "private": true,
-  "description": "Vercel serverless functions for Easy Squawk billing (Stripe).",
+  "description": "Vercel serverless functions for Squawkwire billing (Stripe).",
   "type": "module",
   "engines": { "node": ">=18" },
   "scripts": {

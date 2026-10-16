@@ -1,0 +1,1 @@
+"""Squawkwire ingestion worker package."""

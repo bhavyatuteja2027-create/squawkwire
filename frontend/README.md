@@ -1,6 +1,6 @@
-# Easy Squawk — Next.js frontend
+# Squawkwire — Next.js frontend
 
-App Router (Next.js 14) port of the Easy Squawk terminal. This **supersedes the old static
+App Router (Next.js 14) port of the Squawkwire terminal. This **supersedes the old static
 `web/` folder and the standalone `api/` functions** — the billing/webhook endpoints now live
 inside this app as route handlers.
 

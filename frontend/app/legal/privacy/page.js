@@ -1,11 +1,11 @@
-export const metadata = { title: 'Privacy Policy — Easy Squawk' };
+export const metadata = { title: 'Privacy Policy — Squawkwire' };
 
 export default function Privacy() {
   return (
     <>
       <h1>Privacy Policy</h1>
       <h2>Who we are</h2>
-      <p>[COMPANY LEGAL NAME], [JURISDICTION], operates Easy Squawk. Contact: [CONTACT EMAIL].</p>
+      <p>[COMPANY LEGAL NAME], [JURISDICTION], operates Squawkwire. Contact: [CONTACT EMAIL].</p>
       <h2>What we collect</h2>
       <ul>
         <li><strong>Account data:</strong> email, display name, timezone.</li>

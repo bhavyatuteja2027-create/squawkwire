@@ -3,7 +3,7 @@ import os
 
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "").rstrip("/")
 SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
-USER_AGENT = os.environ.get("SOURCE_USER_AGENT", "EasySquawk/0.2 (contact: you@example.com)")
+USER_AGENT = os.environ.get("SOURCE_USER_AGENT", "Squawkwire/0.2 (contact: you@example.com)")
 
 # Sentiment: "finbert" (ProsusAI/finbert) or "keyword" (fallback, no ML deps).
 SENTIMENT_BACKEND = os.environ.get("SENTIMENT_BACKEND", "keyword").lower()

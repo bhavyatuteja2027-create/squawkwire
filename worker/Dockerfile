@@ -1,4 +1,4 @@
-# Easy Squawk ingestion worker (always-on: Railway / Fly / Cloud Run).
+# Squawkwire ingestion worker (always-on: Railway / Fly / Cloud Run).
 # Default build installs FinBERT deps. For a tiny keyword-only image, set
 # SENTIMENT_BACKEND=keyword and comment out the pip install line.
 FROM python:3.12-slim
@@ -12,7 +12,7 @@ COPY requirements.txt .
 # Install ML deps (skip if you only use the keyword backend).
 RUN pip install -r requirements.txt
 
-COPY easysquawk ./easysquawk
+COPY squawkwire ./squawkwire
 
-# Continuous polling (always-on). Override with ["python","-m","easysquawk.worker","--once"] for cron.
-CMD ["python", "-m", "easysquawk.worker"]
+# Continuous polling (always-on). Override with ["python","-m","squawkwire.worker","--once"] for cron.
+CMD ["python", "-m", "squawkwire.worker"]

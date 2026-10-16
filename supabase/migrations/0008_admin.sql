@@ -1,4 +1,4 @@
--- Easy Squawk — Phase 5: admin flag + admin read RPCs (brief section 12 admin page).
+-- Squawkwire — Phase 5: admin flag + admin read RPCs (brief section 12 admin page).
 -- All admin RPCs check is_admin(auth.uid()) and raise if not admin, so a non-admin calling
 -- them gets nothing even though they're granted to authenticated.
 

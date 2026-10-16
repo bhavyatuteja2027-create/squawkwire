@@ -1,4 +1,4 @@
--- Easy Squawk — Phase 1 RLS + entitlements + delayed-items RPC (brief sections 8, 9, 10)
+-- Squawkwire — Phase 1 RLS + entitlements + delayed-items RPC (brief sections 8, 9, 10)
 -- The free-tier delay is enforced SERVER-SIDE here from day one (brief: "The API enforces
 -- it. The front end only hides controls for convenience.") so it is never retrofitted.
 

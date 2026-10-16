@@ -6,7 +6,7 @@ import os, sys, unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from easysquawk import parse, score  # noqa: E402
+from squawkwire import parse, score  # noqa: E402
 
 
 class TestCategorize(unittest.TestCase):
@@ -63,13 +63,13 @@ class TestKeywordScore(unittest.TestCase):
 class TestEntities(unittest.TestCase):
     def test_cashtag_extracted(self):
         # Works offline even if the SEC map didn't load — cashtags always parse.
-        from easysquawk import entities
+        from squawkwire import entities
         got = entities.extract("$TSLA jumps after earnings")
         tickers = {e["ticker"] for e in got}
         self.assertIn("TSLA", tickers)
 
     def test_stopwords_not_tickers(self):
-        from easysquawk import entities
+        from squawkwire import entities
         got = entities.extract("The CEO discusses GDP and CPI")
         self.assertEqual([e for e in got if e["ticker"] in ("CEO", "GDP", "CPI")], [])
 

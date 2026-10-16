@@ -1,4 +1,4 @@
--- Easy Squawk — Phase 2: fuzzy clustering, entity read access, source health,
+-- Squawkwire — Phase 2: fuzzy clustering, entity read access, source health,
 -- and a server-side ingest RPC that collapses duplicate stories (brief section 6).
 
 -- =========================================================

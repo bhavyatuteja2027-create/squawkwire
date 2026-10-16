@@ -1,11 +1,11 @@
-export const metadata = { title: 'Disclaimer — Easy Squawk' };
+export const metadata = { title: 'Disclaimer — Squawkwire' };
 
 export default function Disclaimer() {
   return (
     <>
       <h1>Disclaimer</h1>
       <h2>Information only — not investment advice</h2>
-      <p>Easy Squawk aggregates publicly available financial news headlines and applies automated
+      <p>Squawkwire aggregates publicly available financial news headlines and applies automated
       analysis, including sentiment and impact scores. All content, scores, categories and alerts
       are provided for <strong>informational purposes only</strong> and do not constitute
       investment, financial, legal or tax advice, nor a recommendation, offer or solicitation to
@@ -18,7 +18,7 @@ export default function Disclaimer() {
       <h2>Your decisions and risk</h2>
       <p>Trading and investing involve substantial risk, including possible loss of principal. You
       are solely responsible for your own decisions. Consult a licensed financial professional
-      before making any investment decision. Easy Squawk and its operators accept no liability for
+      before making any investment decision. Squawkwire and its operators accept no liability for
       any loss arising from use of the service.</p>
       <h2>Sources and timeliness</h2>
       <p>Headlines link back to their original publishers. We do not control or guarantee the

@@ -1,4 +1,4 @@
--- Easy Squawk — Phase 1 schema (brief section 7) + indexes (section 13)
+-- Squawkwire — Phase 1 schema (brief section 7) + indexes (section 13)
 -- Postgres / Supabase. UUID PKs, created_at/updated_at, prepared for Row Level Security.
 -- RLS policies are enabled in a later migration (0002_rls_entitlements.sql).
 

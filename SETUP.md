@@ -1,4 +1,4 @@
-# Easy Squawk — Phase 1 setup & test checklist
+# Squawkwire — Phase 1 setup & test checklist
 
 Three services: **Supabase** (backend), **Vercel** (web app host), **GitHub Actions**
 (interim ingestion — moves to Railway/Fly in Phase 2).
@@ -46,7 +46,7 @@ Set repo **Secrets** (*Settings → Secrets and variables → Actions*):
 |---|---|
 | `SUPABASE_URL` | your project URL |
 | `SUPABASE_SERVICE_ROLE_KEY` | service_role key (secret) |
-| `SOURCE_USER_AGENT` | `EasySquawk/0.1 (contact: you@example.com)` |
+| `SOURCE_USER_AGENT` | `Squawkwire/0.1 (contact: you@example.com)` |
 
 `.github/workflows/update.yml` runs `worker/fetch_news.py` every 10 minutes and upserts into
 `public.items`. Trigger once manually via **Actions → update-feed → Run workflow**.
@@ -56,7 +56,7 @@ Run locally to seed data immediately:
 ```bash
 export SUPABASE_URL=https://YOUR-PROJECT.supabase.co
 export SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-export SOURCE_USER_AGENT="EasySquawk/0.1 (contact: you@example.com)"
+export SOURCE_USER_AGENT="Squawkwire/0.1 (contact: you@example.com)"
 python3 worker/fetch_news.py
 ```
 

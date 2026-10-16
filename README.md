@@ -1,4 +1,4 @@
-# Easy Squawk
+# Squawkwire
 
 Real-time financial news terminal. Phase 1 build: Supabase backend + Vercel-hosted
 web app + Python ingestion worker.

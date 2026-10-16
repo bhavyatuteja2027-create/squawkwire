@@ -2,7 +2,7 @@ import './globals.css';
 import Script from 'next/script';
 
 export const metadata = {
-  title: 'Easy Squawk Live',
+  title: 'Squawkwire Live',
   description: 'Real-time financial news terminal. Automated analysis, not investment advice.',
 };
 

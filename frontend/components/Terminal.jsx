@@ -248,7 +248,7 @@ export default function Terminal() {
           <button key={v} className="nv" aria-current={view === v ? 'page' : undefined} onClick={() => setView(v)}>{label}</button>
         ))}
         {isAdmin && <button className="nv" aria-current={view === 'admin' ? 'page' : undefined} onClick={() => setView('admin')}>Admin</button>}
-        <div className="logo">Easy<br />Squawk</div>
+        <div className="logo">Squawk<br />wire</div>
       </nav>
 
       <div className="mainp">
@@ -542,7 +542,7 @@ function Gate({ sb }) {
   return (
     <div className="gate">
       <div className="card">
-        <h1>Easy Squawk</h1>
+        <h1>Squawkwire</h1>
         <p className="sub">{signup ? 'Create your account' : 'Log in to your terminal'}</p>
         <label>Email</label>
         <input type="email" autoComplete="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />

@@ -1,4 +1,4 @@
-# Easy Squawk — Phase 5: hardening (security, admin, legal, tests)
+# Squawkwire — Phase 5: hardening (security, admin, legal, tests)
 
 Security headers + CSP, Cloudflare Turnstile bot protection on auth, an admin page gated by an
 `is_admin` flag, legal pages with an in-app disclaimer, and a money-path test suite.

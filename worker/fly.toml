@@ -1,14 +1,14 @@
-# Fly.io config for the Easy Squawk ingestion worker (always-on, no inbound HTTP).
+# Fly.io config for the Squawkwire ingestion worker (always-on, no inbound HTTP).
 # Set secrets with: fly secrets set SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... \
-#   SOURCE_USER_AGENT="EasySquawk/0.2 (contact: you@example.com)" SENTIMENT_BACKEND=finbert
-app = "easy-squawk-worker"
+#   SOURCE_USER_AGENT="Squawkwire/0.2 (contact: you@example.com)" SENTIMENT_BACKEND=finbert
+app = "squawkwire-worker"
 primary_region = "iad"
 
 [build]
   dockerfile = "Dockerfile"
 
 [processes]
-  worker = "python -m easysquawk.worker"
+  worker = "python -m squawkwire.worker"
 
 # No [[services]] block: this is a background worker, not a web service.
 [[vm]]
