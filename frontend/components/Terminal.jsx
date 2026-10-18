@@ -250,6 +250,25 @@ export default function Terminal() {
   }, [sb]);
   useEffect(() => { if (view === 'admin' && session) loadAdmin(); }, [view, session, loadAdmin]);
 
+  // ---------- market data download ----------
+  const [md, setMd] = useState({ gold: true, nifty: true, crude: true, period: '1y', interval: '1d', busy: false, note: '' });
+  const downloadMarket = async () => {
+    const { data: { session: s } } = await sb.auth.getSession(); if (!s) return;
+    const keys = ['gold','nifty','crude'].filter((k) => md[k]);
+    if (!keys.length) { setMd((m) => ({ ...m, note: 'Pick at least one instrument.' })); return; }
+    setMd((m) => ({ ...m, busy: true, note: 'Fetching…' }));
+    try {
+      const qs = new URLSearchParams({ symbols: keys.join(','), period: md.period, interval: md.interval });
+      const r = await fetch(`/api/market/download?${qs}`, { headers: { Authorization: `Bearer ${s.access_token}` } });
+      if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || `http_${r.status}`);
+      const url = URL.createObjectURL(await r.blob());
+      const a = document.createElement('a');
+      a.href = url; a.download = `market-data-${md.period}-${md.interval}.csv`;
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      setMd((m) => ({ ...m, busy: false, note: 'Downloaded.' }));
+    } catch (e) { setMd((m) => ({ ...m, busy: false, note: `Could not download (${e.message}).` })); }
+  };
+
   const toggleSquawk = () => { setSq((s) => { const n = !s; if (n) { chime(); unlockSpeech(); } return n; }); };
 
   if (session === undefined) return <div className="gate"><div className="card">Loading…</div></div>;
@@ -265,7 +284,7 @@ export default function Terminal() {
           </svg>
           <span>{sq ? 'Squawk on' : 'Start Squawk'}</span>
         </button>
-        {[['dash', 'Dashboard'], ['watch', 'Watchlists'], ['billing', 'Billing']].map(([v, label]) => (
+        {[['dash', 'Dashboard'], ['watch', 'Watchlists'], ['data', 'Data'], ['billing', 'Billing']].map(([v, label]) => (
           <button key={v} className="nv" aria-current={view === v ? 'page' : undefined} onClick={() => setView(v)}>{label}</button>
         ))}
         {isAdmin && <button className="nv" aria-current={view === 'admin' ? 'page' : undefined} onClick={() => setView('admin')}>Admin</button>}
@@ -343,6 +362,49 @@ export default function Terminal() {
                 })}
               </div>
               <p className="chk" style={{ marginTop: 12, marginBottom: 0 }}>Payments are processed securely by Stripe. Automated analysis for information only, not investment advice.</p>
+            </div>
+          </div>
+        )}
+
+        {view === 'data' && (
+          <div className="page">
+            <div className="card"><h2>Market Data Export</h2>
+              <p className="chk" style={{ margin: '0 0 16px' }}>
+                Download historical OHLCV for Gold, Nifty 50, and Crude Oil from Yahoo Finance.
+                The file is a CSV with columns: symbol, currency, exchange, date, open, high, low, close, volume.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 12, marginBottom: 16 }}>
+                <label className="chk" style={{ margin: 0 }}>
+                  <input type="checkbox" checked={md.gold} onChange={(e) => setMd({ ...md, gold: e.target.checked })} style={{ marginRight: 8 }} />
+                  Gold (COMEX futures, USD)
+                </label>
+                <label className="chk" style={{ margin: 0 }}>
+                  <input type="checkbox" checked={md.nifty} onChange={(e) => setMd({ ...md, nifty: e.target.checked })} style={{ marginRight: 8 }} />
+                  Nifty 50 (NSE index, INR)
+                </label>
+                <label className="chk" style={{ margin: 0 }}>
+                  <input type="checkbox" checked={md.crude} onChange={(e) => setMd({ ...md, crude: e.target.checked })} style={{ marginRight: 8 }} />
+                  Crude Oil (WTI futures, USD)
+                </label>
+              </div>
+              <div className="row" style={{ marginBottom: 12 }}>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
+                  <span style={{ fontSize: 12, color: 'var(--muted)' }}>Period</span>
+                  <select value={md.period} onChange={(e) => setMd({ ...md, period: e.target.value })} style={{ width: 'auto' }}>
+                    {['5d','1mo','3mo','6mo','1y','2y','5y','max'].map((p) => <option key={p} value={p}>{p}</option>)}
+                  </select>
+                </label>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
+                  <span style={{ fontSize: 12, color: 'var(--muted)' }}>Interval</span>
+                  <select value={md.interval} onChange={(e) => setMd({ ...md, interval: e.target.value })} style={{ width: 'auto' }}>
+                    {['1d','1wk','1mo'].map((i) => <option key={i} value={i}>{i}</option>)}
+                  </select>
+                </label>
+              </div>
+              <div className="row" style={{ marginTop: 8 }}>
+                <button className="btn" disabled={md.busy} onClick={downloadMarket}>{md.busy ? 'Downloading…' : 'Download CSV'}</button>
+              </div>
+              {md.note && <div className={md.note.startsWith('Could') ? 'err' : 'chk'} style={{ marginTop: 8, minHeight: 18 }}>{md.note}</div>}
             </div>
           </div>
         )}

@@ -6,7 +6,7 @@
   "type": "module",
   "engines": { "node": ">=18" },
   "scripts": {
-    "test": "node --test api/tests/billing.test.js",
+    "test": "node --test api/tests/billing.test.js api/tests/market.test.js",
     "test:py": "cd worker && python3 -m unittest discover -s tests"
   },
   "dependencies": {
